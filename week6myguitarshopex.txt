@@ -1,0 +1,114 @@
+PART A
+
+1.)
+
+SELECT CategoryName, ProductName, ListPrice 
+FROM Categories c, Products p
+WHERE c.CategoryID = p.CategoryID
+ORDER BY CategoryName, ProductName
+
+
+2.)
+
+SELECT FirstName, LastName, Line1, City, State,  ZipCode 
+FROM Addresses a, Customers c
+WHERE c.CustomerID = a.CustomerID
+AND EmailAddress = 'allan.sherwood@yahoo.com'
+
+
+
+ 3.)
+
+
+SELECT FirstName, LastName, Line1, City, State, ZipCode 
+FROM Customers c, JOIN Addresses a
+where a.CustomerID = c.CustomerID
+and ShippingAddressID = AddressID
+
+
+ 4.)
+SELECT LastName, FirstName, OrderDate, ProductName, ItemPrice, DiscountAmount, Quantity
+FROM Customers c, Orders o, OrderItems oi, Products p
+WHERE c.CustomerID = o.CustomerID
+AND o.OrderID = oi.OrderID
+AND oi.ProductID = p.ProductID
+ORDER BY LastName, OrderDate, ProductName
+
+
+
+5.)
+
+SELECT p1.ProductName, p1.ListPrice 
+FROM Products p1, Products p2
+WHERE p1.ProductID <> p2.ProductID
+AND p1.ListPrice = p2.ListPrice
+ORDER BY p1.ProductName
+
+
+
+6.)
+
+SELECT CategoryName, ProductID 
+FROM Categories c full outer join Products p
+ON c.CategoryID = p.CategoryID
+WHERE ProductID is null
+
+
+	
+
+PART B
+
+
+ 1.)
+
+SELECT COUNT(*) AS OrderCount, 
+SUM(TaxAmount) as TotalTaxAmount 
+FROM Orders
+
+
+
+2.)
+SELECT C.CategoryName,COUNT(P.CategoryID) AS ProductCount, 
+MAX(P.ListPrice) AS
+    MostExpensiveProduct
+    FROM Categories C, Products P
+    WHERE P.CategoryID=C.CategoryID
+    GROUP BY C.CategoryName ORDER BY COUNT(*) DESC;
+
+
+
+3.)
+SELECT C.EmailAddress, SUM(OI.itemprice * OI.quantity) AS ItemPriceTotal, 
+SUM(OI.discountamount * OI.quantity) as DiscountAmountTotal
+FROM Customers C, Orders O, OrderItems OI
+WHERE C.CustomerID = O.CustomerID 
+AND O.OrderID = OI.OrderID
+GROUP BY EmailAddress
+ORDER BY ItemPriceTotal DESC
+
+
+4.)
+
+SELECT EmailAddress, count(o.OrderID) AS OrderCount,
+((sum(oi.ItemPrice) - sum(oi.DiscountAmount)) * sum(oi.Quantity)) AS totalamount
+FROM customers c, orders o, OrderItems oi
+WHERE c.CustomerID = o.CustomerID
+AND o.OrderID = oi.OrderID
+GROUP BY EmailAddress
+HAVING COUNT(o.OrderID) > 1
+ORDER BY sum(oi.ItemPrice) DESC
+
+
+
+5.)
+
+SELECT EmailAddress, count(o.OrderID) AS OrderCount,
+((sum(oi.ItemPrice) - sum(oi.DiscountAmount)) * sum(oi.Quantity)) AS totalamount
+FROM customers c, orders o, OrderItems oi
+WHERE c.CustomerID = o.CustomerID
+AND o.OrderID = oi.OrderID
+AND oi.ItemPrice > 400
+GROUP BY EmailAddress
+HAVING COUNT(o.OrderID) > 1
+ORDER BY sum(oi.ItemPrice) DESC
+

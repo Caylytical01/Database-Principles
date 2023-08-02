@@ -1,0 +1,46 @@
+1. SELECT DISTINCT CategoryName
+FROM Categories c
+where c.CategoryID in ( select p.CategoryID from Products p)
+order by CategoryName
+
+
+2. select ProductName, ListPrice from  Products
+where ListPrice > (Select AVG(p.ListPrice) from Products p)
+order by ListPrice
+
+
+3. select c.categoryname
+from categories c
+where not exists (select 1 from products p where p.categoryid = c.categoryid); 
+
+
+
+
+1. INSERT INTO Categories (CategoryName)
+   VALUES ('Brass');
+
+    
+
+2. UPDATE Categories
+SET CategoryName = 'Woodwinds'
+WHERE CategoryID = 12;
+
+
+
+3. DELETE Categories
+WHERE CategoryID = 11
+
+
+ 
+
+1. SELECT ListPrice, CAST(ListPrice AS decimal(7,1)) AS ListDecimal,
+CONVERT(int , ListPrice) AS ListInt, CAST(ListPrice AS int) AS 
+ListInt2
+FROM Products;
+
+
+2. SELECT DateAdded, CAST(DateAdded AS date) AS DateM,
+CAST(DateAdded AS time(3)) AS Date2, 
+CAST(DateAdded AS varchar(7)) AS Date3
+FROM Products;
+
